@@ -1,0 +1,23 @@
+{
+  "client": {
+    "worldedit": { "options": ["plugin/worldedit"] },
+    "voicechat": { "options": ["plugin/simple-voice-chat"] },
+    "elytraswap": { "options": ["mod/jjelytraswap", "mod/elytra-chestplate-swapper"] },
+    "invsort": { "options": ["mod/clientsort"] },
+    "viewdistance": { "options": ["mod/distanthorizons", "mod/voxy", "mod/bobby"] },
+    "malilib": { "options": ["mod/malilib"] },
+    "litematica": { "options": ["mod/litematica"], "dependsOn": ["malilib"] },
+    "litematica-printer": { "options": ["mod/litematica-printer"], "dependsOn": ["litematica"] },
+    "shulkerboxtooltip": { "options": ["mod/shulkerboxtooltip"] },
+    "clouds": { "options": ["mod/better-clouds"] }
+  },
+  "server": {
+    "horsesummon": { "options": ["datapack/call-your-horse"], "loader": "datapack" },
+    "mannequin": { "options": ["datapack/managing-mannequins"], "loader": "datapack" },
+    "viewdistance": { "options": ["mod/distanthorizons"] },
+    "fabricapi": { "options": ["mod/fabric-api"] },
+    "lithium": { "options": ["mod/lithium"] },
+    "voicechat": { "options": ["plugin/simple-voice-chat"] }
+  },
+  "links": ["https://github.com/coryo12345/custom-textures"]
+}

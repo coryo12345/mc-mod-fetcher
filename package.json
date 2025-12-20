@@ -1,0 +1,36 @@
+{
+  "name": "mc-mod-fetcher",
+  "version": "1.0.0",
+  "description": "get all my preferred mods but in a script",
+  "homepage": "https://github.com/coryo12345/mc-mod-fetcher#readme",
+  "bugs": {
+    "url": "https://github.com/coryo12345/mc-mod-fetcher/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coryo12345/mc-mod-fetcher.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsdown src/index.ts && node dist/index.mjs",
+    "install": "npx playwright install && npx playwright install-deps",
+    "format": "prettier src --write"
+  },
+  "devDependencies": {
+    "@types/colors": "^1.1.3",
+    "@types/node": "^25.0.3",
+    "@types/yargs": "^17.0.35",
+    "prettier": "^3.7.4",
+    "tsdown": "^0.18.1",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@ghostery/adblocker-playwright": "^2.13.1",
+    "@playwright/test": "^1.57.0",
+    "colors": "^1.4.0",
+    "yargs": "^18.0.0"
+  }
+}
