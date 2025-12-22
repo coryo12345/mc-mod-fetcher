@@ -16,7 +16,7 @@ const OUTPUT_DIR = path.resolve(import.meta.dirname, '..', 'mods');
 
 async function main(): Promise<void> {
   const options = await getOptions();
-  const { links, groups } = getModsAsGroups();
+  const { links, groups } = getModsAsGroups({ includeClient: !options.serverOnly, includeServer: !options.clientOnly });
 
   client = new ModrinthClient();
 
@@ -51,7 +51,7 @@ async function processGroup(mods: ModList, version: string, download: boolean) {
 
     let msg: string = '';
     if (download) {
-      const dir = path.resolve(OUTPUT_DIR, `${mod.environment}-${mod.loader}`);
+      const dir = path.resolve(OUTPUT_DIR, version, `${mod.environment}-${mod.loader}`);
       await mkdir(dir, { recursive: true });
 
       const { option, success } = await modFetcher.download(dir);
@@ -83,10 +83,14 @@ async function getOptions() {
   if (argv._.length < 1) {
     throw new Error('MC Version not supplied. See README.md');
   }
-  return {
+  const opts = {
     version: argv['_'][0]?.toString() ?? '',
     download: Boolean(argv.download) ?? false,
+    clientOnly: Boolean(argv.client) ?? false,
+    serverOnly: Boolean(argv.server) ?? false,
   } as const;
+  if (opts.clientOnly && opts.serverOnly) throw new Error('Cannot set both --client and --server');
+  return opts;
 }
 
 main();

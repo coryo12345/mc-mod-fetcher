@@ -26,7 +26,7 @@ export function sortModListByDependencyOrder(mods: ModList): ModListMod[] {
   return orderedMods;
 }
 
-export function getModsAsGroups() {
+export function getModsAsGroups(options?: { includeClient?: boolean; includeServer?: boolean }) {
   const links: string[] = [];
   const groups: Record<string, ModList> = {};
   Object.entries(mods).forEach(([environment, modlist]) => {
@@ -34,12 +34,16 @@ export function getModsAsGroups() {
       links.push(...(modlist as string[]));
       return;
     }
-    Object.entries(modlist).forEach(([modId, config]) => {
-      const loader = config.loader ?? 'fabric';
-      const groupKey = `${environment}-${loader}`;
-      if (!groups[groupKey]) groups[groupKey] = {};
-      groups[groupKey][modId] = { ...config, loader, modId, environment };
-    });
+    const validClient = (options?.includeClient ?? true) && environment === 'client';
+    const validServer = (options?.includeServer ?? true) && environment === 'server';
+    if (validClient || validServer) {
+      Object.entries(modlist).forEach(([modId, config]) => {
+        const loader = config.loader ?? 'fabric';
+        const groupKey = `${environment}-${loader}`;
+        if (!groups[groupKey]) groups[groupKey] = {};
+        groups[groupKey][modId] = { ...config, loader, modId, environment };
+      });
+    }
   });
   return { groups, links };
 }
