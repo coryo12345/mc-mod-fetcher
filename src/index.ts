@@ -19,7 +19,6 @@ async function main(): Promise<void> {
   const { links, groups } = getModsAsGroups();
 
   client = new ModrinthClient();
-  await mkdir(OUTPUT_DIR, { recursive: true });
 
   const entries = Object.entries(groups);
   const counts = { available: 0, unavailable: 0 };
@@ -52,7 +51,10 @@ async function processGroup(mods: ModList, version: string, download: boolean) {
 
     let msg: string = '';
     if (download) {
-      const { option, success } = await modFetcher.download(OUTPUT_DIR);
+      const dir = path.resolve(OUTPUT_DIR, `${mod.environment}-${mod.loader}`);
+      await mkdir(dir, { recursive: true });
+
+      const { option, success } = await modFetcher.download(dir);
       if (success) {
         msg = `✅ ${mod.modId} downloaded: ${option}`.green;
         count.available++;

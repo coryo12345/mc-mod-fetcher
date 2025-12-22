@@ -23,6 +23,3 @@ The values should be the URL slug of the mod. e.g. for `https://modrinth.com/plu
 If there are multiple mods in a group, we will check the version of all of them when checking. 
 
 When downloading, only the first item in a group that matches the version will be downloaded. This allows for fallback versions of mods if necessary.
-
-## TODO
-- sort mods by env/loader
