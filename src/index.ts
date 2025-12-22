@@ -3,37 +3,30 @@ import { hideBin } from 'yargs/helpers';
 import process from 'node:process';
 import { ModList } from './types';
 import { getModsAsGroups, sortModListByDependencyOrder } from './ModListUtils';
-import { BrowserContext, chromium, devices } from '@playwright/test';
-import { ModrinthMod } from './ModrinthMod';
-import colors from 'colors';
-import { PlaywrightBlocker } from '@ghostery/adblocker-playwright';
+import colors from '@colors/colors';
+import { ModrinthClient } from './Modrinth/ModrinthClient';
+import { ModGroupFetcher } from './Modrinth/ModGroupFetcher';
+import path from 'node:path';
+import { mkdir } from 'node:fs/promises';
 
 colors.enable();
 
-// how long to wait between each attempt at fetching mod info.
-// we can get throttled :)
-const MOD_DELAY_TIME = 5 * 1000;
+let client: ModrinthClient | null = null;
+const OUTPUT_DIR = path.resolve(import.meta.dirname, '..', 'mods');
 
 async function main(): Promise<void> {
   const options = await getOptions();
   const { links, groups } = getModsAsGroups();
 
-  // set up playwright browser context
-  const browser = await chromium.launch({
-    headless: !options.debug,
-    // downloadsPath: '', // TODO figure out downloads
-  });
-  const context = await browser.newContext(devices['Desktop Chrome']);
-
-  // this isn't *necessary* but speeds this processes up dramatically.
-  const blocker = await PlaywrightBlocker.fromPrebuiltAdsAndTracking(fetch);
+  client = new ModrinthClient();
+  await mkdir(OUTPUT_DIR, { recursive: true });
 
   const entries = Object.entries(groups);
   const counts = { available: 0, unavailable: 0 };
   for (const entry of entries) {
     const [groupName, modList] = entry;
     console.log(`Processing group ${groupName}...`);
-    const { available, unavailable } = await processGroup(modList, options.version, options.download, context, blocker);
+    const { available, unavailable } = await processGroup(modList, options.version, options.download);
     counts.available += available;
     counts.unavailable += unavailable;
   }
@@ -47,39 +40,30 @@ async function main(): Promise<void> {
   links.forEach((link) => {
     console.log(link);
   });
-
-  await context.close();
-  await browser.close();
 }
 
-async function processGroup(
-  mods: ModList,
-  version: string,
-  download: boolean,
-  context: BrowserContext,
-  blocker?: PlaywrightBlocker,
-) {
+async function processGroup(mods: ModList, version: string, download: boolean) {
+  if (!client) throw new Error('Modrinth Client not initiailized');
+
   const count = { available: 0, unavailable: 0 };
   const orderedMods = sortModListByDependencyOrder(mods);
   for (const mod of orderedMods) {
-    const page = await context.newPage();
-    if (blocker) await blocker.enableBlockingInPage(page);
-    const modrinthPage = new ModrinthMod(page, mod.modId, mod.options);
+    const modFetcher = new ModGroupFetcher(mod, version, client);
 
     let msg: string = '';
     if (download) {
-      const filepath = await modrinthPage.downloadForVersion(version, mod.loader);
-      if (filepath) {
-        msg = `✅ ${mod.modId} downloaded`.green;
+      const { option, success } = await modFetcher.download(OUTPUT_DIR);
+      if (success) {
+        msg = `✅ ${mod.modId} downloaded: ${option}`.green;
         count.available++;
       } else {
         msg = `❌ ${mod.modId} failed`.red;
         count.unavailable++;
       }
     } else {
-      const exists = await modrinthPage.checkForVersion(version, mod.loader);
-      if (exists) {
-        msg = `✅ ${mod.modId} is available`.green;
+      const { option, available } = await modFetcher.availableForVersion();
+      if (available) {
+        msg = `✅ ${mod.modId} is available: ${option}`.green;
         count.available++;
       } else {
         msg = `❌ ${mod.modId} is not updated`.red;
@@ -87,8 +71,6 @@ async function processGroup(
       }
     }
     console.log('\t ' + msg);
-    await page.close();
-    await sleep(MOD_DELAY_TIME);
   }
 
   return count;
@@ -102,14 +84,7 @@ async function getOptions() {
   return {
     version: argv['_'][0]?.toString() ?? '',
     download: Boolean(argv.download) ?? false,
-    debug: Boolean(argv.debug) ?? false,
   } as const;
-}
-
-const sleep = (ms: number) => {
-  return new Promise(res => {
-    setTimeout(res, ms);
-  })
 }
 
 main();

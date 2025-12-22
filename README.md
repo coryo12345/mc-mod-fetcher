@@ -25,6 +25,4 @@ If there are multiple mods in a group, we will check the version of all of them 
 When downloading, only the first item in a group that matches the version will be downloaded. This allows for fallback versions of mods if necessary.
 
 ## TODO
-- can we use the API instead for less throttling?
-- if not, need to handle cases where there is only one platform (e.g. mod/elytra-chestplate-swapper)
-- downloads?
+- sort mods by env/loader
