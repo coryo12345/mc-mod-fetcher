@@ -9,7 +9,11 @@
     "litematica": { "options": ["mod/litematica"], "dependsOn": ["malilib"] },
     "litematica-printer": { "options": ["mod/litematica-printer"], "dependsOn": ["litematica"] },
     "shulkerboxtooltip": { "options": ["mod/shulkerboxtooltip"] },
-    "clouds": { "options": ["mod/better-clouds"] }
+    "clouds": { "options": ["mod/better-clouds"] },
+    "weather": { "options": ["mod/particle-rain"] },
+    "3dskin": { "options": ["mod/3dskinlayers"] },
+    "bettersound": { "options": ["mod/sound-physics-remastered"] },
+    "waveycapes": { "options": ["mod/wavey-capes"] }
   },
   "server": {
     "horsesummon": { "options": ["datapack/call-your-horse"], "loader": "datapack" },
