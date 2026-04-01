@@ -2,7 +2,7 @@
   "client": {
     "worldedit": { "options": ["plugin/worldedit"] },
     "voicechat": { "options": ["plugin/simple-voice-chat"] },
-    "elytraswap": { "options": ["mod/jjelytraswap", "mod/elytra-chestplate-swapper"] },
+    "elytraswap": { "options": ["mod/elytra-chestplate-swapper", "mod/jjelytraswap"] },
     "invsort": { "options": ["mod/clientsort"] },
     "viewdistance": { "options": ["mod/distanthorizons", "mod/voxy", "mod/bobby"] },
     "malilib": { "options": ["mod/malilib"] },
@@ -11,17 +11,23 @@
     "shulkerboxtooltip": { "options": ["mod/shulkerboxtooltip"] },
     "clouds": { "options": ["mod/better-clouds"] },
     "weather": { "options": ["mod/particle-rain"] },
-    "3dskin": { "options": ["mod/3dskinlayers"] },
-    "bettersound": { "options": ["mod/sound-physics-remastered"] },
     "waveycapes": { "options": ["mod/wavey-capes"] }
   },
   "server": {
-    "horsesummon": { "options": ["datapack/call-your-horse"], "loader": "datapack" },
+    "call-horse": { "options": ["datapack/call-your-horse"] },
+    "call-dog": { "options": ["datapack/call-your-dog"] },
+    "call-happy-ghast": { "options": ["datapack/call-your-happy-ghast"] },
+    "call-cat": { "options": ["datapack/call-your-cat"] },
+    "call-parrot": { "options": ["datapack/call-your-parrot"] },
+    "call-nautilus": { "options": ["datapack/call-your-nautilus"] },
     "mannequin": { "options": ["datapack/managing-mannequins"], "loader": "datapack" },
     "viewdistance": { "options": ["mod/distanthorizons"] },
     "fabricapi": { "options": ["mod/fabric-api"] },
     "lithium": { "options": ["mod/lithium"] },
-    "voicechat": { "options": ["plugin/simple-voice-chat"] }
+    "voicechat": { "options": ["plugin/simple-voice-chat"] },
+    "sit-anywhere": { "options": ["datapack/sit-anywhere!"] },
+    "perf-lighting": { "options": ["mod/scalablelux"] },
+    "perf-chunk": { "options": ["mod/c2me-fabric"] }
   },
   "links": ["https://github.com/coryo12345/custom-textures"]
 }

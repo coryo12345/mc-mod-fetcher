@@ -8,3 +8,4 @@ node_modules/
 /playwright/.auth/
 dist/
 mods/
+.DS_Store
