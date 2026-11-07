@@ -21,6 +21,7 @@
     "call-cat": { "options": ["datapack/call-your-cat"], "loader": "datapack" },
     "call-parrot": { "options": ["datapack/call-your-parrot"], "loader": "datapack" },
     "call-nautilus": { "options": ["datapack/call-your-nautilus"], "loader": "datapack" },
+    "5555ff-lib": { "options": ["datapack/lib-5555ff"], "loader": "datapack" },
     "mannequin": { "options": ["datapack/managing-mannequins"], "loader": "datapack" },
     "sit-anywhere": { "options": ["datapack/sit-anywhere!"], "loader": "datapack" },
     "viewdistance": { "options": ["mod/distanthorizons", "mod/voxyserver"] },
